@@ -14,7 +14,7 @@ RUN apk del .tmp
 RUN mkdir /app
 COPY  ./django_project /app
 WORKDIR /app
-COPY ./scripts /scripts
+COPY ./nginx /scripts
 
 # all scripts gets the executble permision
 RUN chmod +x /scripts/*
