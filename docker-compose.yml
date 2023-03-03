@@ -1,24 +1,14 @@
 version: '3.7'
 
+
 services:
-  django_gunicorn:
-    volumes:
-      - static:/static
-    env_file:
-      - .env 
-    build:
-      context: .
+  app:
+    build: 
+      context: .    # local directory which will use the Dockerfile to create the app service
     ports:
-      - "8000:8000"
-  nginx:
-    build: ./nginx 
+      - "8000:8000"   # run the project using port 8000. Map port 8000 on local machine to the docker container so to access it
     volumes:
-      - static:/static
-    ports:
-     - "80:80"
-    depends_on:
-      - django_gunicorn
-
-
-volumes:
-  static:
+      - ./django_project:/app  # maps the project app to the app dir within the container. Allows changes in the docker container app in real time
+    command: sh -c "python manage.py runserver 0.0.0.0:8000"   # using this command for local dev. and not using the entrypoint which is for production purpose
+    environment:
+      - DEBUG=1  #set app to debug state
